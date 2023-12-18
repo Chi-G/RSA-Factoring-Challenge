@@ -1,29 +1,45 @@
 #!/usr/bin/python3
-import time
-import math
 import sys
 from sys import argv
 
+def factorize(value):
 
-def factorize(num):
-    factors = []
-    for i in range(2, int(math.sqrt(num)) + 1):
-        while num % i == 0:
-            factors.append(i)
-            num //= i
-    if num > 1:
-        factors.append(num)
-    return factors
+    """
+    # Factorize as many numbers as possible into..
+    # ..a product of two smaller numbers.
+    # VARIABLE(" "):
+    # factorize(int) Factorize all the things!
+    # Usage: factors <file>
+    # Output format: n=p*q
+    """
+    i = 2
 
-def main(file_path):
-    with open(file_path, 'r') as file:
-        numbers = file.readlines()
-        for number in numbers:
-            num = int(number.strip())
-            factors = factorize(num)
-            if len(factors) >= 2:
-                print(f"{num}={factors[0]}*{factors[1]}")
+    if value < 2:
+        return
+    print()
+    print(value, "<- ")
+    while value % i:
+        i += 1
+    print("{:.0f}={:.0f}*{:.0f}".format(value, value / i, i))
+    print()
+    print(value, "<- ")
 
-if __name__ == "__main__":
-    file_path = sys.argv
-    main(file_path)
+
+if len(argv) != 2:
+    exit()
+
+try:
+    with open(argv[1]) as file:
+        line = file.readline()
+
+        while line != "":
+            value = int(line.split('\n')[0])
+            factorize(value)
+            line = file.readline()
+except FileNotFoundError:
+    print(f'File not found: {argv}')
+except ValueError:
+    print(f'Invalid input in the file: {argv}')
+except Exception as e:
+    print(f'An error occurred: {str(e)}')
+    pass
